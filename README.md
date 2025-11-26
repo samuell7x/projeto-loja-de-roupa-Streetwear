@@ -21,8 +21,4 @@ O StreetStyle é uma loja virtual que oferece roupas e acessórios urbanos, com 
 
 💳 Finalização de pedidos (checkout)
 
-🔍 Filtro e busca de produtos por categoria
-
-👤 Sistema de login e cadastro de usuários
-
-🧾 Área do cliente com histórico de pedidos
+👤 Sistema de comfirmação de usuario antes da compra
