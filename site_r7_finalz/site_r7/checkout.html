@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finalizar Compra</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body { font-family:'Montserrat', sans-serif; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+form { background:#222; padding:30px; border-radius:12px; max-width:500px; width:90%; }
+input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:none; background:#333; color:#fff; }
+button { width:100%; padding:12px; background:#25D366; color:#fff; font-weight:bold; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
+button:hover { background:#1ebe57; }
+h3 { margin-top:20px; margin-bottom:10px; }
+.cart-item { background:#333; padding:10px; margin-bottom:10px; border-radius:6px; display:flex; justify-content:space-between; }
+.cart-item span { display:block; }
+.total { background:#444; padding:10px; border-radius:6px; text-align:right; font-weight:bold; margin-bottom:15px; }
+</style>
+</head>
+<body>
+
+<form action="checkout.php" method="POST">
+    <h2>Finalize sua Compra</h2>
+    <input type="text" name="nome" placeholder="Seu nome" required>
+    <input type="email" name="email" placeholder="Seu email" required>
+
+    <h3>Itens no seu pedido:</h3>
+    <div id="cart-preview"></div>
+    <div class="total" id="cart-total"></div>
+
+    <!-- Itens e total escondidos para enviar via POST -->
+    <input type="hidden" name="itens" id="itens">
+    <input type="hidden" name="total" id="total">
+
+    <button type="submit">Confirmar Pedido</button>
+</form>
+
+<script>
+// Pega os produtos do localStorage
+const cart = JSON.parse(localStorage.getItem("r7_cart") || "[]");
+const cartPreview = document.getElementById('cart-preview');
+const cartItemsInput = document.getElementById('itens');
+const cartTotalInput = document.getElementById('total');
+const cartTotalDiv = document.getElementById('cart-total');
+
+if(cart.length === 0){
+    cartPreview.innerHTML = "<p>Seu carrinho está vazio.</p>";
+    cartTotalDiv.textContent = "Total: R$0.00";
+} else {
+    let total = 0;
+    cart.forEach(item => {
+        const subtotal = item.qty * item.price;
+        total += subtotal;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span>${item.qty}x ${item.title}</span><span>R$ ${subtotal.toFixed(2)}</span>`;
+        cartPreview.appendChild(div);
+    });
+    cartTotalDiv.textContent = "Total: R$" + total.toFixed(2);
+
+    // Preenche campos ocultos
+    cartItemsInput.value = cart.map(i => `${i.qty}x ${i.title}`).join("\n"); ///transforma lista dos itens do carrinho em formato de texto
+    cartTotalInput.value = total.toFixed(2); ///valor total da compra com duas casas decimais
+}
+</script>
+
+</body>
+</html>
