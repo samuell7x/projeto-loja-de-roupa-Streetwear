@@ -7,11 +7,11 @@
 
 
 # projeto-loja-de-roupa-Streetwear
-StreetStyle – Loja de Roupas Streetwear  Um projeto de e-commerce moderno e estiloso, inspirado na cultura streetwear, desenvolvido para praticar e demonstrar habilidades em desenvolvimento web full stack.
+R7Vzn – Loja de Roupas Streetwear  Um projeto de e-commerce moderno e estiloso, inspirado na cultura streetwear, desenvolvido para praticar e demonstrar habilidades em desenvolvimento web full stack.
 
 🛍️ Visão Geral
 
-O StreetStyle é uma loja virtual que oferece roupas e acessórios urbanos, com foco em uma experiência de compra fluida, design minimalista e navegação intuitiva.
+A R7Vzn é uma loja virtual que oferece roupas e acessórios urbanos, com foco em uma experiência de compra fluida, design minimalista e navegação intuitiva.
 
 🚀 Funcionalidades
 
