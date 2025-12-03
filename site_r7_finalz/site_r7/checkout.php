@@ -3,10 +3,25 @@
 $nome = isset($_POST['nome']) ? trim($_POST['nome']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $itens = isset($_POST['itens']) ? trim($_POST['itens']) : '';
-$total = isset($_POST['total']) ? trim($_POST['total']) : '';
+$orig_total = isset($_POST['orig_total']) ? floatval($_POST['orig_total']) : 0.0;
+$coupon = isset($_POST['coupon']) ? trim($_POST['coupon']) : '';
+
+// Recalcula desconto no servidor para evitar manipulação do cliente
+$final_total = $orig_total;
+if (!empty($coupon)) {
+    $coupon = strtoupper($coupon);
+    if ($coupon === 'R7OFF10') {
+        $final_total = round($orig_total * 0.9, 2); // 10% off
+    } elseif ($coupon === 'R7FIX10') {
+        $final_total = round(max(0, $orig_total - 10), 2); // R$10 off
+    }
+}
+
+// Formata como string para validação de campos obrigatórios
+$total = number_format($final_total, 2, '.', '');
 
 
-if (empty($nome) || empty($email) || empty($itens) || empty($total)) {
+if (empty($nome) || empty($email) || empty($itens) || $total === '') {
     die("Erro: Todos os campos são obrigatórios.");
 }
 
@@ -15,8 +30,15 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-    $sql = $pdo->prepare("INSERT INTO pedidos (nome, email, itens, total) VALUES (?, ?, ?, ?)");
-    $sql->execute([$nome, $email, $itens, $total]);
+    $sql = $pdo->prepare("INSERT INTO pedidos (nome, email, itens, total, cupom) VALUES (?, ?, ?, ?, ?)");
+    // Tenta inserir coluna 'cupom' se existir, senão passa um valor vazio (a coluna pode ser adicionada manualmente ao DB)
+    try {
+        $sql->execute([$nome, $email, $itens, $total, $coupon]);
+    } catch (PDOException $e) {
+        // fallback: tabela sem coluna 'cupom'
+        $sql = $pdo->prepare("INSERT INTO pedidos (nome, email, itens, total) VALUES (?, ?, ?, ?)");
+        $sql->execute([$nome, $email, $itens, $total]);
+    }
 
 } catch (PDOException $e) {
     die("Erro ao salvar o pedido: " . $e->getMessage());
@@ -33,7 +55,11 @@ $msg .= " Email: $email\n";
 $msg .= "-------------------------\n";
 $msg .= "$itens\n";
 $msg .= "-------------------------\n";
-$msg .= " Total: R$$total";
+$msg .= " Total original: R$" . number_format($orig_total, 2, '.', '') . "\n";
+if (!empty($coupon)) {
+    $msg .= " Cupom: $coupon\n";
+}
+$msg .= " Total final: R$$total";
 
 
 $msg_url = rawurlencode($msg);
