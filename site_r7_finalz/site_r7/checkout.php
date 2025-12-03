@@ -35,7 +35,7 @@ $msg .= "$itens\n";
 $msg .= "-------------------------\n";
 $msg .= " Total: R$$total";
 
-// Codifica para URL
+
 $msg_url = rawurlencode($msg);
 ?>
 

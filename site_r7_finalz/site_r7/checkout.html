@@ -28,7 +28,7 @@ h3 { margin-top:20px; margin-bottom:10px; }
     <div id="cart-preview"></div>
     <div class="total" id="cart-total"></div>
 
-    <!-- Itens e total escondidos para enviar via POST -->
+    
     <input type="hidden" name="itens" id="itens">
     <input type="hidden" name="total" id="total">
 
@@ -36,7 +36,7 @@ h3 { margin-top:20px; margin-bottom:10px; }
 </form>
 
 <script>
-// Pega os produtos do localStorage
+
 const cart = JSON.parse(localStorage.getItem("r7_cart") || "[]");
 const cartPreview = document.getElementById('cart-preview');
 const cartItemsInput = document.getElementById('itens');
@@ -58,9 +58,9 @@ if(cart.length === 0){
     });
     cartTotalDiv.textContent = "Total: R$" + total.toFixed(2);
 
-    // Preenche campos ocultos
-    cartItemsInput.value = cart.map(i => `${i.qty}x ${i.title}`).join("\n"); ///transforma lista dos itens do carrinho em formato de texto
-    cartTotalInput.value = total.toFixed(2); ///valor total da compra com duas casas decimais
+
+    cartItemsInput.value = cart.map(i => `${i.qty}x ${i.title}`).join("\n"); 
+    cartTotalInput.value = total.toFixed(2); 
 }
 </script>
 
