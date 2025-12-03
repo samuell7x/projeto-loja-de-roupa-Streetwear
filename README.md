@@ -22,3 +22,6 @@ A R7Vzn é uma loja virtual que oferece roupas e acessórios urbanos, com foco e
 💳 Finalização de pedidos (checkout)
 
 👤 Sistema de comfirmação de usuario antes da compra
+
+
+atual

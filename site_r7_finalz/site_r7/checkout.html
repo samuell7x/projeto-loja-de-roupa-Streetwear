@@ -8,9 +8,10 @@
 <style>
 body { font-family:'Montserrat', sans-serif; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; }
 form { background:#222; padding:30px; border-radius:12px; max-width:500px; width:90%; }
-input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:none; background:#333; color:#fff; }
+input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:none; background:#333; color:#fff; box-sizing:border-box; }
 button { width:100%; padding:12px; background:#25D366; color:#fff; font-weight:bold; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
 button:hover { background:#1ebe57; }
+#apply-coupon { width:auto; padding:10px 16px; margin:0; }
 h3 { margin-top:20px; margin-bottom:10px; }
 .cart-item { background:#333; padding:10px; margin-bottom:10px; border-radius:6px; display:flex; justify-content:space-between; }
 .cart-item span { display:block; }
@@ -34,11 +35,11 @@ h3 { margin-top:20px; margin-bottom:10px; }
     <input type="hidden" name="total" id="total">
 
     <label for="coupon" style="display:block;margin-bottom:6px;margin-top:6px;color:#ddd;">Cupom de desconto</label>
-    <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <input type="text" id="coupon" name="coupon" placeholder="Código do cupom" style="flex:1;padding:10px;border-radius:6px;border:none;background:#333;color:#fff;">
-        <button type="button" id="apply-coupon" style="padding:10px 14px;background:#007bff;border:none;color:#fff;border-radius:6px;cursor:pointer;">Aplicar</button>
+    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
+        <input type="text" id="coupon" name="coupon" placeholder="Código do cupom" style="flex:1;padding:10px;border-radius:6px;border:none;background:#333;color:#fff;box-sizing:border-box;">
+        <button type="button" id="apply-coupon" style="padding:10px 16px;background:#007bff;border:none;color:#fff;border-radius:6px;cursor:pointer;flex-shrink:0;">Aplicar</button>
     </div>
-    <div id="coupon-message" style="color:#9fe39f;margin-bottom:12px;min-height:18px;"></div>
+    <div id="coupon-message" style="color:#9fe39f;margin-bottom:12px;min-height:18px;font-size:14px;"></div>
 
     <button type="submit">Confirmar Pedido</button>
 </form>

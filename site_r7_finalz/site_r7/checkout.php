@@ -59,7 +59,7 @@ $msg .= " Total original: R$" . number_format($orig_total, 2, '.', '') . "\n";
 if (!empty($coupon)) {
     $msg .= " Cupom: $coupon\n";
 }
-$msg .= " Total final: R$$total";
+$msg .= " Total final: R$" . $total;
 
 
 $msg_url = rawurlencode($msg);
