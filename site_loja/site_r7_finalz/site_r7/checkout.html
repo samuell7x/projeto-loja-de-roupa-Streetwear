@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finalizar Compra</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body { font-family:'Montserrat', sans-serif; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+form { background:#222; padding:30px; border-radius:12px; max-width:500px; width:90%; }
+input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:none; background:#333; color:#fff; box-sizing:border-box; }
+button { width:100%; padding:12px; background:#25D366; color:#fff; font-weight:bold; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
+button:hover { background:#1ebe57; }
+#apply-coupon { width:auto; padding:10px 16px; margin:0; }
+h3 { margin-top:20px; margin-bottom:10px; }
+.cart-item { background:#333; padding:10px; margin-bottom:10px; border-radius:6px; display:flex; justify-content:space-between; }
+.cart-item span { display:block; }
+.total { background:#444; padding:10px; border-radius:6px; text-align:right; font-weight:bold; margin-bottom:15px; }
+</style>
+</head>
+<body>
+
+<form action="checkout.php" method="POST">
+<h2>Finalize sua Compra</h2>
+<input type="text" name="nome" placeholder="Seu nome" required>
+<input type="email" name="email" placeholder="Seu email" required>
+
+<h3>Itens no seu pedido:</h3>
+<div id="cart-preview"></div>
+<div class="total" id="cart-total"></div>
+
+<input type="hidden" name="itens" id="itens">
+<input type="hidden" name="orig_total" id="orig_total">
+<input type="hidden" name="total" id="total">
+
+<label for="coupon" style="display:block;margin-bottom:6px;margin-top:6px;color:#ddd;">Cupom de desconto</label>
+
+<div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
+    <input type="text" id="coupon" name="coupon" placeholder="Código do cupom" style="flex:1;padding:10px;border-radius:6px;border:none;background:#333;color:#fff;">
+    <button type="button" id="apply-coupon" style="padding:10px 16px;background:#007bff;border:none;color:#fff;border-radius:6px;cursor:pointer;flex-shrink:0;">Aplicar</button>
+</div>
+
+<div id="coupon-message" style="color:#9fe39f;margin-bottom:12px;min-height:18px;font-size:14px;"></div>
+
+<button type="submit">Confirmar Pedido</button>
+</form>
+
+<script>
+
+const cart = JSON.parse(localStorage.getItem("r7_cart") || "[]");
+const cartPreview = document.getElementById('cart-preview');
+const cartItemsInput = document.getElementById('itens');
+const origTotalInput = document.getElementById('orig_total');
+const cartTotalInput = document.getElementById('total');
+const cartTotalDiv = document.getElementById('cart-total');
+const couponInput = document.getElementById('coupon');
+const applyCouponBtn = document.getElementById('apply-coupon');
+const couponMessage = document.getElementById('coupon-message');
+
+
+const COUPONS = {
+    'R7OFF10': { type: 'percent', value: 10, label: '10% de desconto' },
+    'R7FIX10': { type: 'fixed', value: 10, label: 'R$10 de desconto' }
+};
+
+function formatMoney(v){
+    return Number(v).toFixed(2);
+}
+
+function renderCartWithTotal(){
+    if(cart.length === 0){
+        cartPreview.innerHTML = "<p>Seu carrinho está vazio.</p>";
+        cartTotalDiv.textContent = "Total: R$0.00";
+        origTotalInput.value = "0.00";
+        cartTotalInput.value = "0.00";
+        return;
+    }
+
+    let total = 0;
+    cartPreview.innerHTML = '';
+    cart.forEach(item => {
+        const subtotal = item.qty * item.price;
+        total += subtotal;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span>${item.qty}x ${item.title}</span><span>R$ ${subtotal.toFixed(2)}</span>`;
+        cartPreview.appendChild(div);
+    });
+
+    origTotalInput.value = formatMoney(total);
+    cartTotalInput.value = formatMoney(total);
+    cartTotalDiv.textContent = "Total: R$" + formatMoney(total);
+    cartItemsInput.value = cart.map(i => `${i.qty}x ${i.title}`).join("\n");
+}
+
+function applyCoupon(){
+    const code = (couponInput.value || '').trim().toUpperCase();
+    const orig = parseFloat(origTotalInput.value || '0');
+
+    if(!code){
+        couponMessage.style.color = '#f5c56a';
+        couponMessage.textContent = 'Digite um código de cupom.';
+        cartTotalInput.value = formatMoney(orig);
+        cartTotalDiv.textContent = 'Total: R$' + formatMoney(orig);
+        return;
+    }
+
+    const c = COUPONS[code];
+    if(!c){
+        couponMessage.style.color = '#ff9b9b';
+        couponMessage.textContent = 'Cupom inválido.';
+        cartTotalInput.value = formatMoney(orig);
+        cartTotalDiv.textContent = 'Total: R$' + formatMoney(orig);
+        return;
+    }
+
+    let final = orig;
+    let discountAmount = 0;
+
+    if(c.type === 'percent'){
+        discountAmount = orig * (c.value / 100);
+        final = orig - discountAmount;
+    } else if (c.type === 'fixed'){
+        discountAmount = c.value;
+        final = Math.max(0, orig - discountAmount);
+    }
+
+    couponMessage.style.color = '#9fe39f';
+    couponMessage.textContent = `Cupom aplicado: ${c.label} — Desconto R$ ${formatMoney(discountAmount)}.`;
+    cartTotalInput.value = formatMoney(final);
+    cartTotalDiv.textContent = 'Total: R$' + formatMoney(final);
+}
+
+
+renderCartWithTotal();
+
+applyCouponBtn.addEventListener('click', applyCoupon);
+
+couponInput.addEventListener('keyup', function(e){
+    if(e.key === 'Enter') applyCoupon();
+});
+
+</script>
+
+</body>
+</html>

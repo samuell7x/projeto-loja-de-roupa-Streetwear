@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>R7 VzN — Sobre / Contato</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+  
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img src="assets/img/logo.png" class="brand-logo">
+        <span class="brand-title">R7 VzN</span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="contato.html">Contato</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="cart-button" class="cart-btn">
+          🛒 <span id="cart-count" class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    
+    <section class="catalog-hero" style="background:rgba(255,255,255,0.04);">
+      <div class="hero-left">
+        <h1 style="font-size:2.4rem; font-weight:900;">Sobre a R7 VzN</h1>
+        <p style="color:var(--muted); font-size:1rem;">
+          Do corre nasce o luxo — nossa essência, nossa rua, nossa visão.
+        </p>
+      </div>
+      <div class="hero-right">
+        <img src="assets/img/logo.png" class="hero-image">
+      </div>
+    </section>
+
+    
+    <section style="
+      margin-top:20px;
+      background:rgba(255,255,255,0.05);
+      padding:32px;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(3px);
+    ">
+      <h2 style="font-size:1.8rem; font-weight:800; margin-top:0;">Nossa História</h2>
+
+      <p style="color:var(--muted); line-height:1.7; margin-top:10px; font-size:1rem;">
+        A R7 VzN nasceu do corre, da quebrada, da vontade de vestir atitude.
+        Não seguimos tendências — criamos as nossas. Cada peça carrega o DNA da rua:
+        autenticidade, ousadia e presença.  
+        <br><br>
+        Trabalhamos com coleções limitadas, design exclusivo e qualidade real.
+        Aqui, o luxo não vem de grife — vem da visão.
+      </p>
+    </section>
+
+    
+    <section style="
+      margin-top:26px;
+      background:rgba(255,255,255,0.05);
+      padding:32px;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(3px);
+    ">
+      <h2 style="font-size:1.8rem; font-weight:800; margin-top:0;">Entre em Contato</h2>
+
+      <div style="margin-top:20px; display:flex; flex-direction:column; gap:18px;">
+
+        <div style="display:flex; flex-direction:column;">
+          <strong style="font-size:1.1rem;"> Email</strong>
+          <span style="color:var(--muted);">contato@r7vzn.com</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+          <strong style="font-size:1.1rem;"> WhatsApp</strong>
+          <span style="color:var(--muted);">(83) 98916-9992</span>
+        </div>
+
+        <div style="display:flex; flex-direction:column;">
+          <strong style="font-size:1.1rem;"> Instagram</strong>
+          <a href="#" style="color:var(--accent); text-decoration:none;">@r7vzn.store</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  
+  <aside id="cart-panel" class="cart-panel">
+    <div class="cart-header">
+      <h2>Seu Carrinho</h2>
+      <button id="cart-close" class="cart-close">&times;</button>
+    </div>
+
+    <div id="cart-items" class="cart-items"></div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cart-total">R$0.00</strong>
+      </div>
+      <button id="checkout-btn" class="btn-primary">Finalizar Compra</button>
+    </div>
+  </aside>
+
+  <div id="overlay" class="overlay"></div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
