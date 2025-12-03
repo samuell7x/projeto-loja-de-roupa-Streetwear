@@ -21,27 +21,28 @@ h3 { margin-top:20px; margin-bottom:10px; }
 <body>
 
 <form action="checkout.php" method="POST">
-    <h2>Finalize sua Compra</h2>
-    <input type="text" name="nome" placeholder="Seu nome" required>
-    <input type="email" name="email" placeholder="Seu email" required>
+<h2>Finalize sua Compra</h2>
+<input type="text" name="nome" placeholder="Seu nome" required>
+<input type="email" name="email" placeholder="Seu email" required>
 
-    <h3>Itens no seu pedido:</h3>
-    <div id="cart-preview"></div>
-    <div class="total" id="cart-total"></div>
+<h3>Itens no seu pedido:</h3>
+<div id="cart-preview"></div>
+<div class="total" id="cart-total"></div>
 
-    
-    <input type="hidden" name="itens" id="itens">
-    <input type="hidden" name="orig_total" id="orig_total">
-    <input type="hidden" name="total" id="total">
+<input type="hidden" name="itens" id="itens">
+<input type="hidden" name="orig_total" id="orig_total">
+<input type="hidden" name="total" id="total">
 
-    <label for="coupon" style="display:block;margin-bottom:6px;margin-top:6px;color:#ddd;">Cupom de desconto</label>
-    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
-        <input type="text" id="coupon" name="coupon" placeholder="Código do cupom" style="flex:1;padding:10px;border-radius:6px;border:none;background:#333;color:#fff;box-sizing:border-box;">
-        <button type="button" id="apply-coupon" style="padding:10px 16px;background:#007bff;border:none;color:#fff;border-radius:6px;cursor:pointer;flex-shrink:0;">Aplicar</button>
-    </div>
-    <div id="coupon-message" style="color:#9fe39f;margin-bottom:12px;min-height:18px;font-size:14px;"></div>
+<label for="coupon" style="display:block;margin-bottom:6px;margin-top:6px;color:#ddd;">Cupom de desconto</label>
 
-    <button type="submit">Confirmar Pedido</button>
+<div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
+    <input type="text" id="coupon" name="coupon" placeholder="Código do cupom" style="flex:1;padding:10px;border-radius:6px;border:none;background:#333;color:#fff;">
+    <button type="button" id="apply-coupon" style="padding:10px 16px;background:#007bff;border:none;color:#fff;border-radius:6px;cursor:pointer;flex-shrink:0;">Aplicar</button>
+</div>
+
+<div id="coupon-message" style="color:#9fe39f;margin-bottom:12px;min-height:18px;font-size:14px;"></div>
+
+<button type="submit">Confirmar Pedido</button>
 </form>
 
 <script>
@@ -56,8 +57,7 @@ const couponInput = document.getElementById('coupon');
 const applyCouponBtn = document.getElementById('apply-coupon');
 const couponMessage = document.getElementById('coupon-message');
 
-// Defina aqui os cupons válidos (simples)
-// Ex.: R7OFF10 => 10% off, R7FIX10 => R$10 de desconto (valor fixo)
+
 const COUPONS = {
     'R7OFF10': { type: 'percent', value: 10, label: '10% de desconto' },
     'R7FIX10': { type: 'fixed', value: 10, label: 'R$10 de desconto' }
@@ -96,6 +96,7 @@ function renderCartWithTotal(){
 function applyCoupon(){
     const code = (couponInput.value || '').trim().toUpperCase();
     const orig = parseFloat(origTotalInput.value || '0');
+
     if(!code){
         couponMessage.style.color = '#f5c56a';
         couponMessage.textContent = 'Digite um código de cupom.';
@@ -115,6 +116,7 @@ function applyCoupon(){
 
     let final = orig;
     let discountAmount = 0;
+
     if(c.type === 'percent'){
         discountAmount = orig * (c.value / 100);
         final = orig - discountAmount;
@@ -129,7 +131,7 @@ function applyCoupon(){
     cartTotalDiv.textContent = 'Total: R$' + formatMoney(final);
 }
 
-// Inicializa
+
 renderCartWithTotal();
 
 applyCouponBtn.addEventListener('click', applyCoupon);
